@@ -1,0 +1,62 @@
+{
+    "planBoundary": [
+      {
+        "x": 0,
+        "y": 0
+      },
+      {
+        "x": 600,
+        "y": 0
+      },
+      {
+        "x": 600,
+        "y": 600
+      },
+      {
+        "x": 0,
+        "y": 600
+      }
+    ],
+    "rooms": [
+      {
+        "id": "1",
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
+        "id": "2",
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
+        "id": 3,
+        "width": 200,
+        "height": 240,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "meetRoom"
+      },
+      {
+        "id": 4,
+        "width": 80,
+        "height": 80,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 5,
+        "width": 300,
+        "height": 80,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      }
+    ]
+  }
