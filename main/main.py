@@ -34,7 +34,7 @@ def brute_force(floor_plan, rooms):
 
 
 def isRectangleOverlap(R1, R2):
-    if (R1[0]>=R2[2]) or (R1[2]<=R2[0]) or (R1[3]<=R2[1]) or (R1[1]>=R2[3]):
+    if (R1[0] >= R2[2]) or (R1[2] <= R2[0]) or (R1[3] <= R2[1]) or (R1[1] >= R2[3]):
         return False
     return True
 
@@ -45,6 +45,11 @@ def fitted(floor_plan, rooms):
     minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
     maxFloorY = max(floor_plan, key=lambda c: c["y"])["y"]
 
+    for room in rooms:
+        newHeight = max(room["height"], room["width"])
+        newWidth = min(room["height"], room["width"])
+        room["width"] = newWidth
+        room["height"] = newHeight
     rooms.sort(key=lambda room: -room["height"])
     fitted_rooms = [rooms[0]]
 
@@ -52,6 +57,8 @@ def fitted(floor_plan, rooms):
     isFirstVertical = True
     topLeft = True
     isFirstBottomRight = True
+    heightFirstBottomRight = 0
+    doorSize = 20
     boundingsTop = []
     boundingsLeft = []
     for roomNumber, room in enumerate(rooms):
@@ -67,7 +74,7 @@ def fitted(floor_plan, rooms):
                     boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
                 else:
                     horizontal = False
-                    prevRoom["anchorTopLeftY"] = rooms[0]["height"] + 30
+                    prevRoom["anchorTopLeftY"] = rooms[0]["height"] + doorSize
                     anchorXCheck = 0
             if not horizontal:
                 anchorYCheck = prevRoom["anchorTopLeftY"] + prevRoom["height"]
@@ -86,26 +93,48 @@ def fitted(floor_plan, rooms):
         if not topLeft:
             anchorXCheck = prevRoom["anchorTopLeftX"]
             anchorYCheck = maxFloorY - room["height"]
-            bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"]+ room["width"], anchorYCheck + room["height"]]
-            if isFirstBottomRight:
-                anchorXCheck = maxFloorX - room["width"]
-                room["anchorTopLeftX"]=anchorXCheck
-                room["anchorTopLeftY"]=anchorYCheck
-                isFirstBottomRight = False
-                fitted_rooms.append(room)
-                continue
-            canPlace = True
-            for bound in boundingsLeft:
-                if isRectangleOverlap(bounds, bound):
-                    canPlace = False
-                    break
-            if canPlace:
-                room["anchorTopLeftX"]=bounds[0]
-                room["anchorTopLeftY"]=bounds[1]
-                fitted_rooms.append(room)
-            else:
-                pass
+            bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"] + room["width"], anchorYCheck + room["height"]]
+            if horizontal:
+                if isFirstBottomRight:
+                    anchorXCheck = maxFloorX - room["width"]
+                    room["anchorTopLeftX"] = anchorXCheck
+                    room["anchorTopLeftY"] = anchorYCheck
+                    heightFirstBottomRight = anchorYCheck
+                    isFirstBottomRight = False
+                    fitted_rooms.append(room)
+                    continue
+                canPlace = True
+                for bound in boundingsLeft:
+                    if isRectangleOverlap(bounds, bound):
+                        canPlace = False
+                        break
+                if canPlace:
+                    room["anchorTopLeftX"] = bounds[0]
+                    room["anchorTopLeftY"] = bounds[1]
+                    fitted_rooms.append(room)
+                else:
+                    horizontal = False
+                    isFirstVertical = True
+                    prevRoom["anchorTopLeftY"] = heightFirstBottomRight - doorSize
 
+            if not horizontal:
+                anchorXCheck = maxFloorX - room["width"]
+                anchorYCheck = prevRoom["anchorTopLeftY"] - room["height"]
+                if isFirstVertical:
+                    prevRoom["anchorTopLeftY"] = heightFirstBottomRight
+                    isFirstVertical = False
+                bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"] + room["width"], anchorYCheck + room["height"]]
+                canPlace = True
+                for bound in boundingsTop:
+                    if isRectangleOverlap(bounds, bound):
+                        canPlace = False
+                        break
+                if canPlace:
+                    room["anchorTopLeftX"] = anchorXCheck
+                    room["anchorTopLeftY"] = anchorYCheck
+                    fitted_rooms.append(room)
+                else:
+                    break
     if len(rooms) == len(fitted_rooms):
         return fitted_rooms
     raise RuntimeError("Did not manage to fit all rooms into the floor plan.")
