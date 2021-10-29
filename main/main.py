@@ -7,6 +7,7 @@ import random as rand
 
 from pygame.constants import TIMER_RESOLUTION
 
+
 def brute_force(floor_plan, rooms):
     fitted_rooms = [rooms[0]]
     min_x_coord = min(floor_plan, key=lambda c: c['x'])['x']
@@ -70,11 +71,12 @@ def fitted(floor_plan, rooms):
                 else:
                     topLeft = False
         if not topLeft:
-            
-        
+            pass
+
     if len(rooms) == len(fitted_rooms):
         return fitted_rooms
     raise RuntimeError('Did not manage to fit all rooms into the floor plan.')
+
 
 def parse_json(filepath):
     with open(filepath, 'r') as rawinput:
@@ -82,21 +84,26 @@ def parse_json(filepath):
         floor_plan = data['planBoundary']
         room_dict = data['rooms']
     # return  ( FloorPlanCoordinates, RoomDictionary )
-    return ( floor_plan, room_dict )
+    return (floor_plan, room_dict)
 
 
 def main():
     (width, height) = (600, 600)
     pygame.init()
     screen = pygame.display.set_mode((width, height))
-    floor_plan, room_dict = parse_json("/Users/sebastianjohansen/Desktop/ArealizeAI/ArealizeAI/main/example.json")
+    floor_plan, room_dict = parse_json(
+        "/Users/sebastianjohansen/Desktop/ArealizeAI/ArealizeAI/main/example.json")
     parsed = fitted(floor_plan, room_dict)
     while True:
         screen.fill((0, 0, 0), (0, 0, width, height))
         for element in parsed:
-            col = (rand.randint(0, 255), rand.randint(0, 255), rand.randint(0, 255))
-            pygame.draw.rect(screen, col,(element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
+            col = (rand.randint(0, 255), rand.randint(
+                0, 255), rand.randint(0, 255))
+            pygame.draw.rect(
+                screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
         pygame.display.flip()
         pygame.display.update()
         pass
+
+
 main()
