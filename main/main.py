@@ -43,13 +43,16 @@ def fitted(floor_plan, rooms):
     maxFloorX = max(floor_plan, key=lambda c: c["x"])["x"]
     minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
     maxFloorY = max(floor_plan, key=lambda c: c["y"])["y"]
-
+    floorWidth=maxFloorX-minFloorX
+    floorHeight=maxFloorY-minFloorY
     for room in rooms:
         newHeight = max(room["height"], room["width"])
         newWidth = min(room["height"], room["width"])
         room["width"] = newWidth
         room["height"] = newHeight
     rooms.sort(key=lambda room: -room["height"])
+
+    rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"] = minFloorX, minFloorY
     fitted_rooms = [rooms[0]]
 
     horizontal = True
@@ -69,17 +72,19 @@ def fitted(floor_plan, rooms):
             if horizontal:
                 if anchorXCheck + room["width"] <= maxFloorX:
                     room["anchorTopLeftX"] = anchorXCheck
+                    room["anchorTopLeftY"] = minFloorY
                     fitted_rooms.append(room)
                     boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
                 else:
                     horizontal = False
-                    prevRoom["anchorTopLeftY"] = rooms[0]["height"] + doorSize
+                    prevRoom["anchorTopLeftY"] = rooms[0]["height"] + doorSize +minFloorY
                     anchorXCheck = 0
             if not horizontal:
                 anchorYCheck = prevRoom["anchorTopLeftY"] + prevRoom["height"]
+                room["anchorTopLeftX"]=minFloorX
                 room["width"], room["height"]=room["height"] , room["width"]
                 if isFirstVertical:
-                    prevRoom["anchorTopLeftY"] = 0
+                    prevRoom["anchorTopLeftY"] = minFloorY
                     anchorYCheck -= prevRoom["height"]
                     isFirstVertical = False
                 if anchorYCheck + room["height"] <= maxFloorY:
@@ -103,7 +108,6 @@ def fitted(floor_plan, rooms):
                     isFirstBottomRight = False
                     fitted_rooms.append(room)
                     continue
-                print(fitted_rooms[-1])
                 canPlace = True
                 for bound in boundingsLeft:
                     if isRectangleOverlap(bounds, bound):
@@ -139,6 +143,11 @@ def fitted(floor_plan, rooms):
                     break
     if len(rooms) == len(fitted_rooms):
         return fitted_rooms
+    Inside_rooms=rooms[len(fitted_rooms):]
+    fitted_rooms.extend(fitted())
+
+
+
     raise RuntimeError("Did not manage to fit all rooms into the floor plan.")
 
 
@@ -152,7 +161,7 @@ def parse_json(filepath):
 
 
 def main():
-    (width, height) = (600, 600)
+    (width, height) = (620, 620)
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     floor_plan, room_dict = parse_json(
