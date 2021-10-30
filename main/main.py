@@ -6,8 +6,8 @@ import random as rand
 
 from pygame.constants import TIMER_RESOLUTION
 
-#def returnType(e):
-#    return e["type"]
+def returnType(e):
+    return e[0]["type"]
 
 def brute_force(floor_plan, rooms, windows):
     fitted_rooms = [rooms[0]]
@@ -40,7 +40,7 @@ def isRectangleOverlap(R1, R2):
     return True
 
 
-def fitted(floor_plan, rooms):
+def fitted(floor_plan, rooms, windows):
     minFloorX = min(floor_plan, key=lambda c: c["x"])["x"]
     maxFloorX = max(floor_plan, key=lambda c: c["x"])["x"]
     minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
@@ -61,7 +61,7 @@ def fitted(floor_plan, rooms):
             roomtypes["contained"].append(1)
     rooms.sort(key=lambda room: -room["height"])
 
-    #rooms.sort(key=returnType)
+    
     #Sorterer rom etter type attpå type
     units=[]
     while 0 < len(rooms):
@@ -82,6 +82,24 @@ def fitted(floor_plan, rooms):
         for n in reversed(topop):
             rooms.pop(n)
         units.append(unit)
+
+    #Prioriterer workrooms hvis dette er første kall av funksjonen
+    if windows:
+        temp=[]
+        i=0
+        while i<len(units):
+            if units[i][0]["type"]=="workRoom":
+                print("Prioritert:",units[i][0]["type"], units[i])
+                i+=1
+            else:
+                print("Nedprioritert:",units[i][0]["type"], units[i])
+                temp.append(units[i])
+                units.pop(i)
+        for unit in temp:
+            units.append(unit)
+
+
+
     for unitNumb, unit in enumerate(units):
         width=0
         for room in unit:
@@ -266,7 +284,7 @@ def fitted(floor_plan, rooms):
     coordinatemaxx=min(widthFirstBottomRight, widthFirstBottomRightVertical)-doorSize
     coordinatemaxy=heightFirstBottomRight -doorSize
     coordinates = [{"x" : coordinateminx, "y": coordinateminy}, {"x": coordinatemaxx, "y": coordinatemaxy}]
-    fitted_rooms.extend(fitted(coordinates, Inside_rooms))
+    fitted_rooms.extend(fitted(coordinates, Inside_rooms, False))
     return fitted_rooms
 
 
@@ -280,10 +298,9 @@ def parse_json(filepath):
 
 
 def main():
-    windows=True
     floor_plan, room_dict = parse_json(
         "main/example.json")
-    parsed = fitted(floor_plan, room_dict, windows)
+    parsed = fitted(floor_plan, room_dict, False)
     (width, height) = (max(floor_plan, key=lambda c: c["x"])["x"], max(floor_plan, key=lambda c: c["y"])["y"])
     pygame.init()
     screen = pygame.display.set_mode((width, height))
