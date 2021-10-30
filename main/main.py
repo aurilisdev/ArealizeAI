@@ -106,24 +106,14 @@ def fitted(floor_plan, rooms):
     doorSize = 20  
     
 
-    fitted_units = [units[0]]
+    fitted_units = []
     fitted_rooms=[]
     anchorXCheck=minFloorX
     anchorYCheck=minFloorY
     boundingsTop=[]
     boundingsLeft=[]
-
-    for room in units[0]["rooms"]:
-
-        room["anchorTopLeftX"] = anchorXCheck
-        room["anchorTopLeftY"] = minFloorY
-        fitted_rooms.append(room)
-        boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
-        anchorXCheck=room["anchorTopLeftX"]+room["width"]
     
     for unitNumber, unit in enumerate(units):
-        if unitNumber == 0:
-            continue
         if anchorXCheck + unit["width"] <= maxFloorX and anchorYCheck + unit["height"]<=maxFloorY:
             fitted_units.append(unit)
             for room in unit["rooms"]:
@@ -142,8 +132,10 @@ def fitted(floor_plan, rooms):
         else:
             units2.append(unit)
     units=units2.copy()
-
-    anchorYCheck=minFloorY+fitted_rooms[0]["height"]+doorSize
+    if len(fitted_rooms)>0:
+        anchorYCheck=minFloorY+fitted_rooms[0]["height"]+doorSize
+    else:
+        anchorYCheck=minFloorY
     anchorXCheck=minFloorX
     
     for unitNumber, unit in enumerate(units):
@@ -250,7 +242,9 @@ def fitted(floor_plan, rooms):
                     anchorYCheck-=room["height"] 
 
     #over her 4
-    if len(rooms) <= len(fitted_rooms):
+    if len(fitted_rooms)==0:
+        raise RuntimeError("Did not manage to fit all rooms into the floor plan.")
+    if len(rooms) == len(fitted_rooms):
         return fitted_rooms
     Inside_rooms=[]
     for room in rooms:
@@ -273,8 +267,6 @@ def fitted(floor_plan, rooms):
     print(widthFirstBottomRightVertical, widthFirstBottomRight)
     fitted_rooms.extend(fitted(coordinates, Inside_rooms))
     return fitted_rooms
-
-    raise RuntimeError("Did not manage to fit all rooms into the floor plan.")
 
 
 def parse_json(filepath):
