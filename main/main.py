@@ -1,4 +1,3 @@
-from os import wait
 import numpy as np
 import json
 import pygame as pygame
@@ -59,8 +58,8 @@ def fitted(floor_plan, rooms):
     isFirstBottomRight = True
     heightFirstBottomRight = 0
     doorSize = 20
-    boundingsTop = []
-    boundingsLeft = []
+    boundingsTop = [[rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"], rooms[0]["anchorTopLeftX"] + rooms[0]["width"], rooms[0]["anchorTopLeftY"]+rooms[0]["height"]]]
+    boundingsLeft = [[rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"], rooms[0]["anchorTopLeftX"] + rooms[0]["width"], rooms[0]["anchorTopLeftY"]+rooms[0]["height"]]]
     for roomNumber, room in enumerate(rooms):
         if roomNumber == 0:
             continue
@@ -78,6 +77,7 @@ def fitted(floor_plan, rooms):
                     anchorXCheck = 0
             if not horizontal:
                 anchorYCheck = prevRoom["anchorTopLeftY"] + prevRoom["height"]
+                room["width"], room["height"]=room["height"] , room["width"]
                 if isFirstVertical:
                     prevRoom["anchorTopLeftY"] = 0
                     anchorYCheck -= prevRoom["height"]
@@ -118,6 +118,7 @@ def fitted(floor_plan, rooms):
                     prevRoom["anchorTopLeftY"] = heightFirstBottomRight - doorSize
 
             if not horizontal:
+                room["width"], room["height"]=room["height"] , room["width"]
                 anchorXCheck = maxFloorX - room["width"]
                 anchorYCheck = prevRoom["anchorTopLeftY"] - room["height"]
                 if isFirstVertical:
@@ -154,9 +155,9 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     floor_plan, room_dict = parse_json(
-        "/Users/sebastianjohansen/Desktop/ArealizeAI/ArealizeAI/main/example.json")
+        "/Users/alexa/ArealizeAI/main/example.json")
     parsed = fitted(floor_plan, room_dict)
-    while True:
+    for i in range(3*10**3):
         screen.fill((0, 0, 0), (0, 0, width, height))
         for element in parsed:
             col = (rand.randint(0, 255), rand.randint(
