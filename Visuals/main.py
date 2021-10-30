@@ -3,6 +3,7 @@ import json
 import pygame as pygame
 from pygame import color
 import random as rand
+import sys
 
 from pygame.constants import TIMER_RESOLUTION
 
@@ -310,14 +311,14 @@ def text_objects(text, font):
     textSurface = font.render(text, True, (0,0,0))
     return textSurface, textSurface.get_rect()
 
-floor_plan, room_dict = parse_json("example.json")
+floor_plan, room_dict = parse_json("ArealizeAI/Visuals/example.json")
 parsed = fitted(floor_plan, room_dict)
 noFurn, furn = furnish(parsed)
 print(noFurn)
 print(furn)
 
-desk = pygame.transform.scale(pygame.image.load("desk.png"), (furniDim,furniDim))
-plant = pygame.transform.scale(pygame.image.load("plant.png"), (int(furniDim/1.5),int(furniDim/1.5)))
+desk = pygame.transform.scale(pygame.image.load("ArealizeAI/Visuals/desk.png"), (furniDim,furniDim))
+plant = pygame.transform.scale(pygame.image.load("ArealizeAI/Visuals/plant.png"), (int(furniDim/1.5),int(furniDim/1.5)))
 
 
 
