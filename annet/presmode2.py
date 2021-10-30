@@ -252,37 +252,36 @@ def parse_json(filepath):
 
 def main():
     drawn_rooms = []
-    #draw_index = 0
     (width, height) = (800, 800)
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     floor_plan, room_dict = parse_json(
         "example.json")
-    parsed = fitted(floor_plan, room_dict)
+    index = 0
+
+    element = fitted(floor_plan, room_dict)
 
     while True:
         screen.fill((0, 0, 0), (0, 0, width, height))
-        
-        for element in parsed:
-            if element["type"]=="workRoom":
-                col = (255,0,0)
-            if element["type"]=="meetRoom":
-                col = (0,0,255)
-            if element["type"]=="openWork":
-                col = (0,255,0)
-            #col =(rand.randint(0, 255), rand.randint(0, 255),rand.randint(0, 255))
-            
+
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                drawn_rooms.append((element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]))
-                print('true')
-                    
+                if element[index]["type"]=="workRoom":
+                    col = (255,0,0)
+                if element[index]["type"]=="meetRoom":
+                    col = (0,0,255)
+                if element[index]["type"]=="openWork":
+                    col = (0,255,0)
+                #col =(rand.randint(0, 255), rand.randint(0, 255),rand.randint(0, 255))
+                drawn_rooms.append((element[index]["anchorTopLeftX"], element[index]["anchorTopLeftY"], element[index]["width"], element[index]["height"]))
+                index += 1
+
+            
         for dim in drawn_rooms:
             pygame.draw.rect(screen, col, dim, 4)
 
         pygame.display.flip()
         pygame.display.update()
-
 
 
 main()
