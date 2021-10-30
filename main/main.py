@@ -119,7 +119,7 @@ def fitted(floor_plan, rooms):
                 room["anchorTopLeftX"] = anchorXCheck
                 room["anchorTopLeftY"] = minFloorY
                 fitted_rooms.append(room)
-                boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
+                boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"]+doorSize, room["anchorTopLeftY"]+room["height"]+doorSize])
                 anchorXCheck=room["anchorTopLeftX"]+room["width"]
    
     #over her 1
@@ -148,7 +148,7 @@ def fitted(floor_plan, rooms):
                 room["anchorTopLeftX"] = minFloorX
                 room["anchorTopLeftY"] = anchorYCheck
                 fitted_rooms.append(room)
-                boundingsLeft.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
+                boundingsLeft.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"]+doorSize, room["anchorTopLeftY"]+room["height"]+doorSize])
                 anchorYCheck=room["anchorTopLeftY"]+room["height"]
 
     #over her 2
@@ -243,7 +243,7 @@ def fitted(floor_plan, rooms):
     #over her 4
     if len(fitted_rooms)==0:
         raise RuntimeError("Did not manage to fit all rooms into the floor plan.")
-    if len(rooms) == len(fitted_rooms):
+    if len(rooms) <= len(fitted_rooms):
         return fitted_rooms
     Inside_rooms=[]
     for room in rooms:
@@ -253,17 +253,19 @@ def fitted(floor_plan, rooms):
             Inside_rooms.append(room)
     #her skriv inn koordinatene til rom 1 ned mot høyre(x koordinatet kan være fra det første rommet nedover, bruk boundleft, bound top)
     #skriv inn koordinatene til rommet nederst til venstre 
-    if len(boundingsLeft)>1:
-        coordinateminx=max(boundingsTop[0][2] , boundingsLeft[0][2]) +doorSize
+    if len(boundingsLeft)*len(boundingsTop)>0:
+        coordinateminx=max(boundingsTop[0][2] , boundingsLeft[0][2])
+        coordinateminy=boundingsTop[0][3]
+    elif len(boundingsTop)>0:
+        coordinateminx=boundingsTop[0][2]
+        coordinateminy=boundingsTop[0][3]
     else:
-        coordinateminx=boundingsTop[0][2] +doorSize
+        coordinateminx=boundingsLeft[0][2]
+        coordinateminy=boundingsLeft[0][3]
 
     coordinatemaxx=min(widthFirstBottomRight, widthFirstBottomRightVertical)-doorSize
-    coordinateminy=boundingsTop[0][3] +doorSize
     coordinatemaxy=heightFirstBottomRight -doorSize
     coordinates = [{"x" : coordinateminx, "y": coordinateminy}, {"x": coordinatemaxx, "y": coordinatemaxy}]
-    print(coordinates)
-    print(widthFirstBottomRightVertical, widthFirstBottomRight)
     fitted_rooms.extend(fitted(coordinates, Inside_rooms))
     return fitted_rooms
 
