@@ -203,7 +203,7 @@ def parse_json(filepath):
 
 
 def main():
-    (width, height) = (1000, 1000)
+    (width, height) = (800, 800)
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     floor_plan, room_dict = parse_json(

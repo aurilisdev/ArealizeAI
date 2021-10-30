@@ -5,8 +5,8 @@
         "y": 20
       },
       {
-        "x": 1000,
-        "y": 1000
+        "x": 800,
+        "y": 800
       }
     ],
     "rooms": [
@@ -203,6 +203,52 @@
         "type": "openWork"
       },
       {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },{
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },{
         "id": 19,
         "width": 80,
         "height": 120,
