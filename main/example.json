@@ -329,13 +329,94 @@
         "type": "openWork"
       },
       {
+        "id": 13,
+        "width": 70,
+        "height": 150,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 14,
+        "width": 80,
+        "height": 50,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 15,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 16,
+        "width": 80,
+        "height": 110,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 17,
+        "width": 80,
+        "height": 21,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "meetRoom"
+      },
+      {
+        "id": 18,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
         "id": 19,
         "width": 80,
         "height": 120,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "openWork"
-      },{
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
         "id": 19,
         "width": 80,
         "height": 120,
