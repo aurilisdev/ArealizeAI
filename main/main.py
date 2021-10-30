@@ -120,7 +120,7 @@ def fitted(floor_plan, rooms):
                 room["anchorTopLeftX"] = anchorXCheck
                 room["anchorTopLeftY"] = minFloorY
                 fitted_rooms.append(room)
-                boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
+                boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"]+doorSize, room["anchorTopLeftY"]+room["height"]+doorSize])
                 anchorXCheck=room["anchorTopLeftX"]+room["width"]
    
     #over her 1
@@ -149,7 +149,7 @@ def fitted(floor_plan, rooms):
                 room["anchorTopLeftX"] = minFloorX
                 room["anchorTopLeftY"] = anchorYCheck
                 fitted_rooms.append(room)
-                boundingsLeft.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
+                boundingsLeft.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"]+doorSize, room["anchorTopLeftY"]+room["height"]+doorSize])
                 anchorYCheck=room["anchorTopLeftY"]+room["height"]
 
     #over her 2
@@ -188,7 +188,7 @@ def fitted(floor_plan, rooms):
                 for room in unit["rooms"]:
                     forste2+=1
                     if forste == 1 and forste2==1:
-                        anchorXCheck-=doorSize
+                        #anchorXCheck-=doorSize
                         forste =0
                         heightFirstBottomRight=fitted_rooms[-1]["anchorTopLeftY"]
                         widthFirstBottomRight=fitted_rooms[-1]["anchorTopLeftX"]
@@ -255,9 +255,9 @@ def fitted(floor_plan, rooms):
     #her skriv inn koordinatene til rom 1 ned mot høyre(x koordinatet kan være fra det første rommet nedover, bruk boundleft, bound top)
     #skriv inn koordinatene til rommet nederst til venstre 
     if len(boundingsLeft)>1:
-        coordinateminx=max(boundingsTop[0][2] , boundingsLeft[0][2]) +doorSize
+        coordinateminx=max(boundingsTop[0][2] , boundingsLeft[0][2])
     else:
-        coordinateminx=boundingsTop[0][2] +doorSize
+        coordinateminx=boundingsTop[0][2]
 
     coordinatemaxx=min(widthFirstBottomRight, widthFirstBottomRightVertical)-doorSize
     coordinateminy=boundingsTop[0][3] +doorSize

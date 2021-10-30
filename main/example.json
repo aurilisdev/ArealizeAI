@@ -2,10 +2,10 @@
     "planBoundary": [
       {
         "x": 0,
-        "y": 20
+        "y": 0
       },
       {
-        "x": 900,
+        "x": 1000,
         "y": 800
       }
     ],
@@ -599,6 +599,22 @@
         "type": "meetRoom"
       },
       {
+        "id": 17,
+        "width": 80,
+        "height": 21,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "meetRoom"
+      },
+      {
+        "id": 18,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
         "id": 18,
         "width": 80,
         "height": 120,
@@ -700,7 +716,24 @@
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "openWork"
-      },{
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 19,
+        "width": 80,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
         "id": 19,
         "width": 80,
         "height": 120,
