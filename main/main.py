@@ -155,17 +155,17 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     floor_plan, room_dict = parse_json(
-        "/Users/alexa/ArealizeAI/main/example.json")
+        "main/example.json")
     parsed = fitted(floor_plan, room_dict)
-    for i in range(3*10**3):
-        screen.fill((0, 0, 0), (0, 0, width, height))
-        for element in parsed:
-            col = (rand.randint(0, 255), rand.randint(
-                0, 255), rand.randint(0, 255))
-            pygame.draw.rect(
-                screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
-        pygame.display.flip()
-        pygame.display.update()
+    screen.fill((0, 0, 0), (0, 0, width, height))
+    for element in parsed:
+        col = (rand.randint(0, 255), rand.randint(
+            0, 255), rand.randint(0, 255))
+        pygame.draw.rect(
+            screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
+    pygame.display.flip()
+    pygame.display.update()
+    while True:
         pass
 
 
