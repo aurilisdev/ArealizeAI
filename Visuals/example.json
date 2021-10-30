@@ -1,0 +1,119 @@
+{
+    "planBoundary": [
+      {
+        "x": 0,
+        "y": 20
+      },
+      {
+        "x": 1000,
+        "y": 1000
+      }
+    ],
+    "rooms": [
+      {
+        "id": 1,
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
+        "id": 2,
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
+        "id": 3,
+        "width": 200,
+        "height": 240,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "meetRoom"
+      },
+      {
+        "id": 4,
+        "width": 80,
+        "height": 80,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 5,
+        "width": 300,
+        "height": 80,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 6,
+        "width": 120,
+        "height": 120,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 7,
+        "width": 80,
+        "height": 200,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "meetRoom"
+      },
+      {
+        "id": 8,
+        "width": 80,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 9,
+        "width": 80,
+        "height": 90,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 10,
+        "width": 80,
+        "height": 200,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id":  11,
+        "width": 80,
+        "height": 200,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "openWork"
+      },
+      {
+        "id": 12,
+        "width": 20,
+        "height": 180,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "meetRoom"
+    },
+      {
+        "id": 13,
+        "width": 300,
+        "height": 300,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "meetRoom"
+      }
+
+    ]
+  }
