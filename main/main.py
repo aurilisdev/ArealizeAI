@@ -203,11 +203,11 @@ def parse_json(filepath):
 
 
 def main():
-    (width, height) = (620, 620)
+    (width, height) = (1000, 1000)
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     floor_plan, room_dict = parse_json(
-        "example.json")
+        "/Users/sebastianjohansen/Desktop/ArealizeAI/ArealizeAI/main/example.json")
     parsed = fitted(floor_plan, room_dict)
     print(type(parsed))
     screen.fill((0, 0, 0), (0, 0, width, height))
