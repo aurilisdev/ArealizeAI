@@ -285,12 +285,12 @@ def parse_json(filepath):
 
 
 def main():
-    (width, height) = (800, 800)
+    floor_plan, room_dict = parse_json(
+        "main/example.json")
+    parsed = fitted(floor_plan, room_dict)
+    (width, height) = (max(floor_plan, key=lambda c: c["x"])["x"], max(floor_plan, key=lambda c: c["y"])["y"])
     pygame.init()
     screen = pygame.display.set_mode((width, height))
-    floor_plan, room_dict = parse_json(
-        "example.json")
-    parsed = fitted(floor_plan, room_dict)
     print(type(parsed))
     screen.fill((0, 0, 0), (0, 0, width, height))
     for element in parsed:
@@ -305,7 +305,7 @@ def main():
             screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
     pygame.display.flip()
     pygame.display.update()
-    for i in range(3*10**9):
+    while True:
         pass
 
 main()
