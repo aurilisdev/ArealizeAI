@@ -223,7 +223,7 @@ def main():
             screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
     pygame.display.flip()
     pygame.display.update()
-    for i in range(3*10**8):
+    for i in range(3*10**11):
         pass
 
 main()
