@@ -243,7 +243,7 @@ def furnish(parsed):
 
                 if room['type']=="workRoom":
                     if typeOfFurniture==3 or typeOfFurniture==4:
-                        if i<=(num-3): #then we can place a cupboard
+                        if i<=(numSpots-3): #then we can place a cupboard   #maybe something wrong is numSpots correct variable
                             roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+furniDim*i+padding
                             roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']
                             roomFurniture['type']=2
@@ -325,6 +325,15 @@ def main():
     (width, height) = (1000, 1000)
     pygame.init()
     screen = pygame.display.set_mode((width, height))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_q:
+                pygame.quit()
+                sys.exit()
 
 
     screen.fill((255,255,255), (0, 0, width, height))
