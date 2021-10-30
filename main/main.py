@@ -6,6 +6,8 @@ import random as rand
 
 from pygame.constants import TIMER_RESOLUTION
 
+def returnType(e):
+    return e["type"]
 
 def brute_force(floor_plan, rooms):
     fitted_rooms = [rooms[0]]
@@ -43,13 +45,21 @@ def fitted(floor_plan, rooms):
     maxFloorX = max(floor_plan, key=lambda c: c["x"])["x"]
     minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
     maxFloorY = max(floor_plan, key=lambda c: c["y"])["y"]
+    networks=[[],[]]
 
     for room in rooms:
         newHeight = max(room["height"], room["width"])
         newWidth = min(room["height"], room["width"])
         room["width"] = newWidth
         room["height"] = newHeight
+        if room["type"] in networks[0]:
+            networks[1][networks[0].index(room["type"])].append(room)
+        else:
+            tempArray=[room]
+            networks[0].append(room["type"])
+            networks[1].append(tempArray)
     rooms.sort(key=lambda room: -room["height"])
+    rooms.sort(key=returnType)
     fitted_rooms = [rooms[0]]
 
     horizontal = True
