@@ -147,7 +147,7 @@ def fitted(floor_plan, rooms):
                     fitted_rooms.append(room)
                     continue
                 canPlace = True
-                for bound in boundingsLeft:
+                for bound in boundingsLeft + boundingsTop:
                     if isRectangleOverlap(bounds, bound):
                         canPlace = False
                         break
@@ -170,7 +170,7 @@ def fitted(floor_plan, rooms):
                     isFirstVertical = False
                 bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"] + room["width"], anchorYCheck + room["height"]]
                 canPlace = True
-                for bound in boundingsTop:
+                for bound in boundingsTop + boundingsLeft:
                     if isRectangleOverlap(bounds, bound):
                         canPlace = False
                         break
