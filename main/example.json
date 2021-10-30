@@ -11,7 +11,7 @@
     ],
     "rooms": [
       {
-        "id": "1",
+        "id": 1,
         "width": 40,
         "height": 40,
         "anchorTopLeftX": 0,
@@ -19,7 +19,7 @@
         "type": "workRoom"
       },
       {
-        "id": "2",
+        "id": 2,
         "width": 40,
         "height": 40,
         "anchorTopLeftX": 0,
@@ -104,7 +104,7 @@
         "height": 30,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
-        "type": "openWork"
+        "type": "meetRoom"
       },
       {
         "id": 13,
@@ -144,7 +144,7 @@
         "height": 210,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
-        "type": "openWork"
+        "type": "meetRoom"
       },
       {
         "id": 18,
@@ -152,7 +152,7 @@
         "height": 120,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
-        "type": "openWork"
+        "type": "workRoom"
       },
       {
         "id": 19,

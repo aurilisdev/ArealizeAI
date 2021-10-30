@@ -6,6 +6,8 @@ import random as rand
 
 from pygame.constants import TIMER_RESOLUTION
 
+#def returnType(e):
+#    return e["type"]
 
 def brute_force(floor_plan, rooms):
     fitted_rooms = [rooms[0]]
@@ -39,10 +41,11 @@ def isRectangleOverlap(R1, R2):
 
 
 def fitted(floor_plan, rooms):
-    minFloorX = min(floor_plan, key=lambda c: c["x"])["x"]
+    #minFloorX = min(floor_plan, key=lambda c: c["x"])["x"]
     maxFloorX = max(floor_plan, key=lambda c: c["x"])["x"]
-    minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
+    #minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
     maxFloorY = max(floor_plan, key=lambda c: c["y"])["y"]
+    roomtypes={"names":[],"contained":[]}
     floorWidth=maxFloorX-minFloorX
     floorHeight=maxFloorY-minFloorY
     for room in rooms:
@@ -50,8 +53,38 @@ def fitted(floor_plan, rooms):
         newWidth = min(room["height"], room["width"])
         room["width"] = newWidth
         room["height"] = newHeight
+        if room["type"] in roomtypes["names"]:
+            typeIndex=roomtypes["names"].index(room["type"])
+            roomtypes["contained"][typeIndex]+=1
+        else:
+            roomtypes["names"].append(room["type"])
+            roomtypes["contained"].append(1)
     rooms.sort(key=lambda room: -room["height"])
 
+    #rooms.sort(key=returnType)
+    #Sorterer rom etter type attpå type
+    units=[]
+    while 0 < len(rooms):
+        unit=[rooms[0]]
+        topop=[0]
+        typeIndex=roomtypes["names"].index(rooms[0]["type"])
+        roomtypes["contained"][typeIndex]-=1
+        if not roomtypes["contained"][typeIndex]==0:            
+            for roomNumber, room in enumerate(rooms):
+                if roomNumber == 0:
+                    continue
+                if room["type"]==rooms[0]["type"]:
+                    unit.append(room)
+                    roomtypes["contained"][typeIndex]-=1
+                    topop.append(roomNumber)
+                    if not roomtypes["contained"][typeIndex]==1:
+                        break
+        for n in reversed(topop):
+            rooms.pop(n)
+        units.append(unit)
+    for unit in units:
+        for room in unit:
+            rooms.append(room)
     rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"] = minFloorX, minFloorY
     fitted_rooms = [rooms[0]]
 
@@ -147,6 +180,7 @@ def fitted(floor_plan, rooms):
                     fitted_rooms.append(room)
                 else:
                     break
+
     if len(rooms) == len(fitted_rooms):
         return fitted_rooms
     Inside_rooms=rooms[len(fitted_rooms):]
@@ -154,7 +188,6 @@ def fitted(floor_plan, rooms):
     #skriv inn koordinatene til rommet nederst til venstre 
     coordinates = [{"x" : max(boundingsLeft[0][2] , boundingsLeft[1][2]) +doorSize, "y": boundingsLeft[0][3] +doorSize}, {"x": min(widthFirstBottomRight, widthFirstBottomRightVertical)-doorSize, "y": heightFirstBottomRight -doorSize}]
     fitted_rooms.extend(fitted(coordinates, Inside_rooms))
-    print("Ja")
     return fitted_rooms
 
     raise RuntimeError("Did not manage to fit all rooms into the floor plan.")
