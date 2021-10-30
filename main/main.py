@@ -60,6 +60,8 @@ def fitted(floor_plan, rooms):
     topLeft = True
     isFirstBottomRight = True
     heightFirstBottomRight = 0
+    widthFirstBottomRight = 0
+    widthFirstBottomRightVertical=0
     doorSize = 20
     boundingsTop = [[rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"], rooms[0]["anchorTopLeftX"] + rooms[0]["width"], rooms[0]["anchorTopLeftY"]+rooms[0]["height"]]]
     boundingsLeft = [[rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"], rooms[0]["anchorTopLeftX"] + rooms[0]["width"], rooms[0]["anchorTopLeftY"]+rooms[0]["height"]]]
@@ -101,10 +103,13 @@ def fitted(floor_plan, rooms):
             bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"] + room["width"], anchorYCheck + room["height"]]
             if horizontal:
                 if isFirstBottomRight:
+                    room["width"], room["height"]=room["height"] , room["width"]
+                    anchorYCheck = maxFloorY - room["height"]
                     anchorXCheck = maxFloorX - room["width"]
                     room["anchorTopLeftX"] = anchorXCheck
                     room["anchorTopLeftY"] = anchorYCheck
                     heightFirstBottomRight = anchorYCheck
+                    widthFirstBottomRight = anchorXCheck
                     isFirstBottomRight = False
                     fitted_rooms.append(room)
                     continue
@@ -127,6 +132,7 @@ def fitted(floor_plan, rooms):
                 anchorXCheck = maxFloorX - room["width"]
                 anchorYCheck = prevRoom["anchorTopLeftY"] - room["height"]
                 if isFirstVertical:
+                    widthFirstBottomRightVertical=maxFloorX-room["width"]
                     prevRoom["anchorTopLeftY"] = maxFloorY-fitted_rooms[-1]["height"]
                     isFirstVertical = False
                 bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"] + room["width"], anchorYCheck + room["height"]]
@@ -144,9 +150,12 @@ def fitted(floor_plan, rooms):
     if len(rooms) == len(fitted_rooms):
         return fitted_rooms
     Inside_rooms=rooms[len(fitted_rooms):]
-    fitted_rooms.extend(fitted())
-
-
+    #her skriv inn koordinatene til rom 1 ned mot høyre(x koordinatet kan være fra det første rommet nedover, bruk boundleft, bound top)
+    #skriv inn koordinatene til rommet nederst til venstre 
+    coordinates = [{"x" : max(boundingsLeft[0][2] , boundingsLeft[1][2]) +doorSize, "y": boundingsLeft[0][3] +doorSize}, {"x": min(widthFirstBottomRight, widthFirstBottomRightVertical)-doorSize, "y": heightFirstBottomRight -doorSize}]
+    fitted_rooms.extend(fitted(coordinates, Inside_rooms))
+    print("Ja")
+    return fitted_rooms
 
     raise RuntimeError("Did not manage to fit all rooms into the floor plan.")
 
@@ -165,8 +174,9 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     floor_plan, room_dict = parse_json(
-        "main/example.json")
+        "example.json")
     parsed = fitted(floor_plan, room_dict)
+    print(type(parsed))
     screen.fill((0, 0, 0), (0, 0, width, height))
     for element in parsed:
         if element["type"]=="workRoom":
@@ -175,12 +185,12 @@ def main():
             col = (0,0,255)
         if element["type"]=="openWork":
             col = (0,255,0)
+        col =(rand.randint(0, 255), rand.randint(0, 255),rand.randint(0, 255))
         pygame.draw.rect(
             screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
     pygame.display.flip()
     pygame.display.update()
-    while True:
+    for i in range(3*10**8):
         pass
-
 
 main()
