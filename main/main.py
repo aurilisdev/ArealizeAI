@@ -99,121 +99,156 @@ def fitted(floor_plan, rooms):
         }
         units[unitNumb]=unit
         
-            
-    rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"] = minFloorX, minFloorY
-    fitted_rooms = [rooms[0]]
-
-    horizontal = True
-    isFirstVertical = True
-    topLeft = True
-    isFirstBottomRight = True
     heightFirstBottomRight = 0
     widthFirstBottomRight = 0
     widthFirstBottomRightVertical=0
-    doorSize = 20
-    boundingsTop = [[rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"], rooms[0]["anchorTopLeftX"] + rooms[0]["width"], rooms[0]["anchorTopLeftY"]+rooms[0]["height"]]]
-    boundingsLeft = [[rooms[0]["anchorTopLeftX"], rooms[0]["anchorTopLeftY"], rooms[0]["anchorTopLeftX"] + rooms[0]["width"], rooms[0]["anchorTopLeftY"]+rooms[0]["height"]]]
-    for roomNumber, room in enumerate(rooms):
-        if roomNumber == 0:
+    doorSize = 20  
+    
+
+    fitted_units = [units[0]]
+    fitted_rooms=[]
+    anchorXCheck=minFloorX
+    anchorYCheck=minFloorY
+    boundingsTop=[]
+    boundingsLeft=[]
+
+    for room in units[0]["rooms"]:
+
+        room["anchorTopLeftX"] = anchorXCheck
+        room["anchorTopLeftY"] = minFloorY
+        fitted_rooms.append(room)
+        boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
+        anchorXCheck=room["anchorTopLeftX"]+room["width"]
+    
+    for unitNumber, unit in enumerate(units):
+        if unitNumber == 0:
             continue
-        prevRoom = fitted_rooms[-1]
-        anchorXCheck = prevRoom["anchorTopLeftX"] + prevRoom["width"]
-        if topLeft:
-            if horizontal:
-                if anchorXCheck + room["width"] <= maxFloorX:
-                    room["anchorTopLeftX"] = anchorXCheck
-                    room["anchorTopLeftY"] = minFloorY
-                    fitted_rooms.append(room)
-                    boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
-                else:
-                    if room["indeks"]!=0:
-                        #hopp tilbake så mange steg
-                        anchorXCheck=fitted_rooms[-room["indeks"]]["anchorTopLeftX"]
-                        anchorYCheck=fitted_rooms[-room["indeks"]]["anchorTopLeftY"]
-                        for i in range(room["indeks"]):
-                            fitted_rooms.pop()
-                        for unit in units[room["unit"]+1:]:
-                            if anchorXCheck+unit["width"]<=maxFloorX:
-                                for room2 in unit["rooms"]:
-                                    room2["anchorTopLeftX"] = anchorXCheck
-                                    room2["anchorTopLeftY"] = minFloorY
-                                    fitted_rooms.append(room2)
-                                    anchorXCheck= anchorXCheck+room2["width"]
-                                    boundingsTop.append([room2["anchorTopLeftX"], room2["anchorTopLeftY"], room2["anchorTopLeftX"] + room2["width"], room2["anchorTopLeftY"]+room2["height"]])
-                                break
-                        
+        if anchorXCheck + unit["width"] <= maxFloorX and anchorYCheck + unit["height"]<=maxFloorY:
+            fitted_units.append(unit)
+            for room in unit["rooms"]:
+                room["anchorTopLeftX"] = anchorXCheck
+                room["anchorTopLeftY"] = minFloorY
+                fitted_rooms.append(room)
+                boundingsTop.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
+                anchorXCheck=room["anchorTopLeftX"]+room["width"]
+   
+    #over her 1
 
-                    horizontal = False
-                    prevRoom["anchorTopLeftY"] = rooms[0]["height"] + doorSize +minFloorY
-                    anchorXCheck = 0
-                    
-            if not horizontal:
-                anchorYCheck = prevRoom["anchorTopLeftY"] + prevRoom["height"]
-                room["anchorTopLeftX"]=minFloorX
-                room["width"], room["height"]=room["height"] , room["width"]
-                if isFirstVertical:
-                    prevRoom["anchorTopLeftY"] = minFloorY
-                    anchorYCheck -= prevRoom["height"]
-                    isFirstVertical = False
-                if anchorYCheck + room["height"] <= maxFloorY:
-                    room["anchorTopLeftY"] = anchorYCheck
-                    fitted_rooms.append(room)
-                    boundingsLeft.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
-                else:
-                    topLeft = False
-                    horizontal = True
-                    isFirstVertical = True
-        if not topLeft:
-            anchorXCheck = prevRoom["anchorTopLeftX"]
-            anchorYCheck = maxFloorY - room["height"]
-            bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"] + room["width"], anchorYCheck + room["height"]]
-            if horizontal:
-                if isFirstBottomRight:
-                    room["width"], room["height"]=room["height"] , room["width"]
-                    anchorYCheck = maxFloorY - room["height"]
-                    anchorXCheck = maxFloorX - room["width"]
-                    room["anchorTopLeftX"] = anchorXCheck
-                    room["anchorTopLeftY"] = anchorYCheck
-                    heightFirstBottomRight = anchorYCheck
-                    widthFirstBottomRight = anchorXCheck
-                    isFirstBottomRight = False
-                    fitted_rooms.append(room)
-                    continue
-                canPlace = True
-                for bound in boundingsLeft + boundingsTop:
-                    if isRectangleOverlap(bounds, bound):
-                        canPlace = False
-                        break
-                if canPlace:
-                    room["anchorTopLeftX"] = bounds[0]
-                    room["anchorTopLeftY"] = bounds[1]
-                    fitted_rooms.append(room)
-                else:
-                    horizontal = False
-                    isFirstVertical = True
-                    prevRoom["anchorTopLeftY"] = heightFirstBottomRight - doorSize
+    units2=[]
+    for unit in units:
+        if unit in fitted_units:
+            pass
+        else:
+            units2.append(unit)
+    units=units2.copy()
 
-            if not horizontal:
+    anchorYCheck=minFloorY+fitted_rooms[0]["height"]+doorSize
+    print(anchorYCheck)
+    anchorXCheck=minFloorX
+    
+    for unitNumber, unit in enumerate(units):
+        unit["width"], unit["height"]=unit["height"] , unit["width"]
+        if unitNumber == 0:
+            continue
+        if anchorYCheck + unit["height"] <= maxFloorY and minFloorX + unit["width"]<=maxFloorX:
+            fitted_units.append(unit)
+            for room in unit["rooms"]:
                 room["width"], room["height"]=room["height"] , room["width"]
-                anchorXCheck = maxFloorX - room["width"]
-                anchorYCheck = prevRoom["anchorTopLeftY"] - room["height"]
-                if isFirstVertical:
-                    widthFirstBottomRightVertical=maxFloorX-room["width"]
-                    prevRoom["anchorTopLeftY"] = maxFloorY-fitted_rooms[-1]["height"]
-                    isFirstVertical = False
-                bounds = [anchorXCheck - room["width"], anchorYCheck, anchorXCheck - room["width"] + room["width"], anchorYCheck + room["height"]]
-                canPlace = True
+                room["anchorTopLeftX"] = minFloorX
+                room["anchorTopLeftY"] = anchorYCheck
+                fitted_rooms.append(room)
+                boundingsLeft.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] + room["width"], room["anchorTopLeftY"]+room["height"]])
+                anchorYCheck=room["anchorTopLeftY"]+room["height"]
+
+    #over her 2
+
+    units2=[]
+    for unit in units:
+        if unit in fitted_units:
+            pass
+        else:
+            units2.append(unit)
+    units=units2.copy()
+
+    anchorYCheck=maxFloorY
+    anchorXCheck=maxFloorX
+    
+    forste = 1
+    for unitNumber, unit in enumerate(units):
+        unit["width"], unit["height"]=unit["height"] , unit["width"]
+        if anchorXCheck - unit["width"] >= minFloorX and maxFloorY- unit["height"]>=minFloorY:
+            kreasj=0
+            midanchorX=anchorXCheck
+            midanchorY=anchorYCheck
+            for room in unit["rooms"]:
+                bounds = [midanchorX - room["width"], midanchorY - room["height"], midanchorX , midanchorY]
                 for bound in boundingsTop + boundingsLeft:
                     if isRectangleOverlap(bounds, bound):
-                        canPlace = False
+                        kreasj=1
                         break
-                if canPlace:
-                    room["anchorTopLeftX"] = anchorXCheck
-                    room["anchorTopLeftY"] = anchorYCheck
+                midanchorX-=room["width"]
+            if kreasj == 0:
+                fitted_units.append(unit)
+                forste2=-1
+                for room in unit["rooms"]:
+                    forste2+=1
+                    if forste == 1 and forste2==1:
+                        anchorXCheck-=doorSize
+                        forste =0
+                        heightFirstBottomRight=fitted_rooms[-1]["anchorTopLeftY"]
+                        widthFirstBottomRight=fitted_rooms[-1]["anchorTopLeftX"]
+                    room["anchorTopLeftX"] = anchorXCheck-room["width"]
+                    room["anchorTopLeftY"] = maxFloorY-room["height"]
                     fitted_rooms.append(room)
-                else:
-                    break
 
+                    anchorXCheck-=room["width"]
+
+    #over her 3
+
+    units2=[]
+    for unit in units:
+        if unit in fitted_units:
+            pass
+        else:
+            units2.append(unit)
+    units=units2.copy()
+    print(len(fitted_rooms), "hæ")
+    anchorXCheck=maxFloorX
+    anchorYCheck=heightFirstBottomRight
+    print(anchorYCheck, heightFirstBottomRight)
+
+    forste = 1
+    for unitNumber, unit in enumerate(units):
+        unit["width"], unit["height"]=unit["height"] , unit["width"]
+        if anchorXCheck - unit["width"] >= minFloorX and anchorYCheck- unit["height"]>=minFloorY:
+            kreasj=0
+            midanchorX=anchorXCheck
+            midanchorY=anchorYCheck
+            for room in unit["rooms"]:
+                room["width"], room["height"]=room["height"] , room["width"]
+                bounds = [midanchorX - room["width"], midanchorY - room["height"], midanchorX , midanchorY]
+                for bound in boundingsTop + boundingsLeft:
+                    if isRectangleOverlap(bounds, bound):
+                        print(room["height"], room["width"], "hvor hoy")
+                        kreasj=1
+                        break
+                midanchorY-=room["height"]
+            if kreasj == 0:
+                fitted_units.append(unit)
+                forste2=-1
+                for room in unit["rooms"]:
+                    forste2+=1
+                    if forste == 1 and forste2==0:
+                        widthFirstBottomRightVertical=fitted_rooms[-1]["anchorTopLeftX"]
+                        anchorYCheck-=doorSize
+                        forste=0
+                    room["anchorTopLeftX"] = maxFloorX-room["width"]
+                    room["anchorTopLeftY"] = anchorYCheck-room["height"]
+                    fitted_rooms.append(room)
+                    anchorYCheck-=room["height"] 
+
+    print(len(fitted_rooms))
+    #over her 4
     if len(rooms) <= len(fitted_rooms):
         return fitted_rooms
     Inside_rooms=[]
@@ -222,16 +257,15 @@ def fitted(floor_plan, rooms):
             pass
         else:
             Inside_rooms.append(room)
-    print(len(rooms), len(fitted_rooms),  len(Inside_rooms))
-    print(len(fitted_rooms)+len(Inside_rooms)-len(rooms), "dette tallet")
     #her skriv inn koordinatene til rom 1 ned mot høyre(x koordinatet kan være fra det første rommet nedover, bruk boundleft, bound top)
     #skriv inn koordinatene til rommet nederst til venstre 
     if len(boundingsLeft)>1:
-        coordinateminx=max(boundingsLeft[0][2] , boundingsLeft[1][2]) +doorSize
+        coordinateminx=max(boundingsTop[0][2] , boundingsLeft[0][2]) +doorSize
     else:
-        coordinateminx=boundingsLeft[0][2] +doorSize
+        coordinateminx=boundingsTop[0][2] +doorSize
+
     coordinatemaxx=min(widthFirstBottomRight, widthFirstBottomRightVertical)-doorSize
-    coordinateminy=boundingsLeft[0][3] +doorSize
+    coordinateminy=boundingsTop[0][3] +doorSize
     coordinatemaxy=heightFirstBottomRight -doorSize
     coordinates = [{"x" : coordinateminx, "y": coordinateminy}, {"x": coordinatemaxx, "y": coordinatemaxy}]
     print("ja")
