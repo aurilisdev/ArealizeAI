@@ -289,18 +289,7 @@ def main():
     screen = pygame.display.set_mode((width, height))
     index = 0
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
-            sys.exit()
-
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_q:
-                pygame.quit()
-                sys.exit()
-
     while True:
-
         screen.fill((0, 0, 0), (0, 0, width, height))
 
         for event in pygame.event.get():
