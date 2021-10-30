@@ -11,6 +11,14 @@
     ],
     "rooms": [
       {
+        "id": 0,
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
         "id": 1,
         "width": 40,
         "height": 40,
@@ -28,37 +36,37 @@
       },
       {
         "id": 3,
-        "width": 200,
+        "width": 240,
         "height": 240,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "meetRoom"
       },      {
-        "id": 1,
-        "width": 40,
-        "height": 40,
+        "id": 4,
+        "width": 20,
+        "height": 20,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "workRoom"
       },
       {
-        "id": 2,
-        "width": 40,
-        "height": 40,
+        "id": 5,
+        "width": 20,
+        "height": 20,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "workRoom"
       },
       {
-        "id": 3,
-        "width": 200,
+        "id": 6,
+        "width": 240,
         "height": 240,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "meetRoom"
       },
       {
-        "id": 4,
+        "id": 7,
         "width": 80,
         "height": 80,
         "anchorTopLeftX": 0,
@@ -66,7 +74,7 @@
         "type": "openWork"
       },
       {
-        "id": 5,
+        "id": 8,
         "width": 300,
         "height": 80,
         "anchorTopLeftX": 0,
@@ -74,7 +82,7 @@
         "type": "openWork"
       }, 
       {
-        "id": 6,
+        "id": 9,
         "width": 120,
         "height": 120,
         "anchorTopLeftX": 0,
@@ -82,15 +90,15 @@
         "type": "openWork"
       },      
       {
-        "id": 7,
-        "width": 80,
+        "id": 10,
+        "width": 120,
         "height": 200,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "meetRoom"
       },
       {
-        "id": 8,
+        "id": 11,
         "width": 80,
         "height": 40,
         "anchorTopLeftX": 0,
@@ -98,7 +106,7 @@
         "type": "openWork"
       },
       {
-        "id": 9,
+        "id": 12,
         "width": 80,
         "height": 90,
         "anchorTopLeftX": 0,
@@ -106,7 +114,7 @@
         "type": "openWork"
       },
       {
-        "id": 10,
+        "id": 13,
         "width": 80,
         "height": 200,
         "anchorTopLeftX": 0,
@@ -114,7 +122,7 @@
         "type": "openWork"
       },
       {
-        "id":  11,
+        "id":  14,
         "width": 80,
         "height": 30,
         "anchorTopLeftX": 0,
