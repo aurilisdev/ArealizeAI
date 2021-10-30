@@ -9,7 +9,7 @@ from pygame.constants import TIMER_RESOLUTION
 #def returnType(e):
 #    return e["type"]
 
-def brute_force(floor_plan, rooms):
+def brute_force(floor_plan, rooms, windows):
     fitted_rooms = [rooms[0]]
     min_x_coord = min(floor_plan, key=lambda c: c["x"])["x"]
     max_x_coord = max(floor_plan, key=lambda c: c["x"])["x"]
@@ -41,7 +41,6 @@ def isRectangleOverlap(R1, R2):
 
 
 def fitted(floor_plan, rooms):
-    print("jada")
     minFloorX = min(floor_plan, key=lambda c: c["x"])["x"]
     maxFloorX = max(floor_plan, key=lambda c: c["x"])["x"]
     minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
@@ -279,9 +278,10 @@ def parse_json(filepath):
 
 
 def main():
+    windows=True
     floor_plan, room_dict = parse_json(
-        "example.json")
-    parsed = fitted(floor_plan, room_dict)
+        "main/example.json")
+    parsed = fitted(floor_plan, room_dict, windows)
     (width, height) = (max(floor_plan, key=lambda c: c["x"])["x"], max(floor_plan, key=lambda c: c["y"])["y"])
     pygame.init()
     screen = pygame.display.set_mode((width, height))
