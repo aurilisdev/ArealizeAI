@@ -41,9 +41,9 @@ def isRectangleOverlap(R1, R2):
 
 
 def fitted(floor_plan, rooms):
-    #minFloorX = min(floor_plan, key=lambda c: c["x"])["x"]
+    minFloorX = min(floor_plan, key=lambda c: c["x"])["x"]
     maxFloorX = max(floor_plan, key=lambda c: c["x"])["x"]
-    #minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
+    minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
     maxFloorY = max(floor_plan, key=lambda c: c["y"])["y"]
     roomtypes={"names":[],"contained":[]}
     floorWidth=maxFloorX-minFloorX
