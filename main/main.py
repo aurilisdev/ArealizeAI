@@ -69,7 +69,6 @@ def fitted(floor_plan, rooms):
         roomtypes["contained"][typeIndex]-=1
         if not roomtypes["contained"][typeIndex]==0:            
             for roomNumber, room in enumerate(rooms):
-                print(roomtypes["contained"][typeIndex],room["type"],room["id"])
                 if roomNumber == 0:
                     continue
                 if room["type"]==rooms[0]["type"]:
@@ -84,8 +83,6 @@ def fitted(floor_plan, rooms):
     for unit in units:
         for room in unit:
             rooms.append(room)
-    for room in rooms:
-        print(room)
     fitted_rooms = [rooms[0]]
 
     horizontal = True
