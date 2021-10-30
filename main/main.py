@@ -103,7 +103,6 @@ def fitted(floor_plan, rooms):
                     isFirstBottomRight = False
                     fitted_rooms.append(room)
                     continue
-                print(fitted_rooms[-1])
                 canPlace = True
                 for bound in boundingsLeft:
                     if isRectangleOverlap(bounds, bound):
@@ -160,8 +159,12 @@ def main():
     parsed = fitted(floor_plan, room_dict)
     screen.fill((0, 0, 0), (0, 0, width, height))
     for element in parsed:
-        col = (rand.randint(0, 255), rand.randint(
-            0, 255), rand.randint(0, 255))
+        if element["type"]=="workRoom":
+            col = (255,0,0)
+        if element["type"]=="meetRoom":
+            col = (0,0,255)
+        if element["type"]=="openWork":
+            col = (0,255,0)
         pygame.draw.rect(
             screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
     pygame.display.flip()

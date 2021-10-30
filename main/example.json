@@ -72,7 +72,7 @@
         "height": 600,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
-        "type": "openWork"
+        "type": "meetRoom"
       },
       {
         "id": 8,
@@ -83,7 +83,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 9,
         "width": 80,
         "height": 90,
         "anchorTopLeftX": 0,
@@ -91,7 +91,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 10,
         "width": 80,
         "height": 200,
         "anchorTopLeftX": 0,
@@ -99,7 +99,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id":  11,
         "width": 80,
         "height": 30,
         "anchorTopLeftX": 0,
@@ -107,7 +107,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 12,
         "width": 90,
         "height": 30,
         "anchorTopLeftX": 0,
@@ -115,7 +115,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 13,
         "width": 70,
         "height": 150,
         "anchorTopLeftX": 0,
@@ -123,7 +123,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 14,
         "width": 80,
         "height": 50,
         "anchorTopLeftX": 0,
@@ -131,7 +131,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 15,
         "width": 80,
         "height": 120,
         "anchorTopLeftX": 0,
@@ -139,7 +139,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 16,
         "width": 80,
         "height": 110,
         "anchorTopLeftX": 0,
@@ -147,7 +147,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 17,
         "width": 80,
         "height": 210,
         "anchorTopLeftX": 0,
@@ -155,7 +155,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 18,
         "width": 80,
         "height": 120,
         "anchorTopLeftX": 0,
@@ -163,7 +163,7 @@
         "type": "openWork"
       },
       {
-        "id": 8,
+        "id": 19,
         "width": 80,
         "height": 120,
         "anchorTopLeftX": 0,
