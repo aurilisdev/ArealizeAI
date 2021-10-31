@@ -399,13 +399,14 @@ def main():
     maxverdi=1.0
     minverdi=0.0
     try: 
-        parsed = fitted(floor_plan, room_dict, 1, screen)
+        parsed = fitted(floor_plan, room_dict, maxverdi, screen)
     except:
         for i in range(10):
             midverdi=(maxverdi+minverdi)/2.0
+            print(midverdi)
             try:
                 fitted(floor_plan, room_dict, midverdi, screen)
-                minveri=midverdi
+                minverdi=midverdi
             except:
                 maxverdi=midverdi
         screen.fill((0, 0, 0), (0, 0, width, height))
