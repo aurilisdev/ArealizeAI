@@ -42,14 +42,14 @@ def isRectangleOverlap(R1, R2):
     return True
 
 
-def fitted(floor_plan, rooms, windows):
+def fitted(floor_plan, rooms, windows, screen):
     minFloorX = min(floor_plan, key=lambda c: c["x"])["x"]
     maxFloorX = max(floor_plan, key=lambda c: c["x"])["x"]
     minFloorY = min(floor_plan, key=lambda c: c["y"])["y"]
     maxFloorY = max(floor_plan, key=lambda c: c["y"])["y"]
     roomtypes = {"names": [], "contained": []}
-    floorWidth = maxFloorX-minFloorX
-    floorHeight = maxFloorY-minFloorY
+    #floorWidth = maxFloorX-minFloorX
+    #floorHeight = maxFloorY-minFloorY
     for room in rooms:
         newHeight = max(room["height"], room["width"])
         newWidth = min(room["height"], room["width"])
@@ -90,10 +90,10 @@ def fitted(floor_plan, rooms, windows):
         i = 0
         while i < len(units):
             if units[i][0]["type"] == "workRoom":
-                print("Prioritert:", units[i][0]["type"], units[i])
+                #print("Prioritert:", units[i][0]["type"], units[i])
                 i += 1
             else:
-                print("Nedprioritert:", units[i][0]["type"], units[i])
+                #print("Nedprioritert:", units[i][0]["type"], units[i])
                 temp.append(units[i])
                 units.pop(i)
         for unit in temp:
@@ -127,6 +127,8 @@ def fitted(floor_plan, rooms, windows):
     anchorYCheck = minFloorY
     boundingsTop = []
     boundingsLeft = []
+    boundingsRight = []
+    boundingsBottom = []
 
     for unitNumber, unit in enumerate(units):
         if anchorXCheck + unit["width"] <= maxFloorX and anchorYCheck + unit["height"] <= maxFloorY:
@@ -189,7 +191,7 @@ def fitted(floor_plan, rooms, windows):
     for unitNumber, unit in enumerate(units):
         unit["width"], unit["height"] = unit["height"], unit["width"]
         if anchorXCheck - unit["width"] >= minFloorX and maxFloorY - unit["height"] >= minFloorY:
-            kreasj = 0
+            kreasj = False
             midanchorX = anchorXCheck
             midanchorY = anchorYCheck
             for room in unit["rooms"]:
@@ -197,10 +199,10 @@ def fitted(floor_plan, rooms, windows):
                           room["height"], midanchorX, midanchorY]
                 for bound in boundingsTop + boundingsLeft:
                     if isRectangleOverlap(bounds, bound):
-                        kreasj = 1
+                        kreasj = True
                         break
                 midanchorX -= room["width"]
-            if kreasj == 0:
+            if not kreasj:
                 fitted_units.append(unit)
                 forste2 = -1
                 for room in unit["rooms"]:
@@ -213,6 +215,8 @@ def fitted(floor_plan, rooms, windows):
                     room["anchorTopLeftX"] = anchorXCheck-room["width"]
                     room["anchorTopLeftY"] = maxFloorY-room["height"]
                     fitted_rooms.append(room)
+                    boundingsBottom.append([room["anchorTopLeftX"]-doorSize, room["anchorTopLeftY"]-doorSize, room["anchorTopLeftX"] +
+                                     room["width"], room["anchorTopLeftY"]+room["height"]])
 
                     anchorXCheck -= room["width"]
 
@@ -227,6 +231,13 @@ def fitted(floor_plan, rooms, windows):
         else:
             units2.append(unit)
     units = units2.copy()
+    foundBottomY = (0, 0,0,0)
+    if(len(boundingsBottom) > 0):
+        foundBottomY = boundingsBottom[0]
+    for element in boundingsBottom:
+        if(element[1] < foundBottomY[1]):
+            foundBottomY = element
+    heightFirstBottomRight = foundBottomY[1]
     anchorXCheck = maxFloorX
     anchorYCheck = heightFirstBottomRight
 
@@ -234,7 +245,7 @@ def fitted(floor_plan, rooms, windows):
     for unitNumber, unit in enumerate(units):
         unit["width"], unit["height"] = unit["height"], unit["width"]
         if anchorXCheck - unit["width"] >= minFloorX and anchorYCheck - unit["height"] >= minFloorY:
-            kreasj = 0
+            kreasj = False
             midanchorX = anchorXCheck
             midanchorY = anchorYCheck
             for room in unit["rooms"]:
@@ -243,10 +254,10 @@ def fitted(floor_plan, rooms, windows):
                           room["height"], midanchorX, midanchorY]
                 for bound in boundingsTop + boundingsLeft:
                     if isRectangleOverlap(bounds, bound):
-                        kreasj = 1
+                        kreasj = True
                         break
                 midanchorY -= room["height"]
-            if kreasj == 0:
+            if not kreasj:
                 fitted_units.append(unit)
                 forste2 = -1
                 for room in unit["rooms"]:
@@ -258,6 +269,8 @@ def fitted(floor_plan, rooms, windows):
                     room["anchorTopLeftX"] = maxFloorX-room["width"]
                     room["anchorTopLeftY"] = anchorYCheck-room["height"]
                     fitted_rooms.append(room)
+                    boundingsRight.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] +
+                                     room["width"], room["anchorTopLeftY"]+room["height"]])
                     anchorYCheck -= room["height"]
 
     # over her 4
@@ -274,22 +287,40 @@ def fitted(floor_plan, rooms, windows):
             Inside_rooms.append(room)
     # her skriv inn koordinatene til rom 1 ned mot høyre(x koordinatet kan være fra det første rommet nedover, bruk boundleft, bound top)
     # skriv inn koordinatene til rommet nederst til venstre
-    if len(boundingsLeft)*len(boundingsTop) > 0:
-        coordinateminx = max(boundingsTop[0][2], boundingsLeft[0][2])
-        coordinateminy = boundingsTop[0][3]
-    elif len(boundingsTop) > 0:
-        coordinateminx = boundingsTop[0][2]
-        coordinateminy = boundingsTop[0][3]
-    else:
-        coordinateminx = boundingsLeft[0][2]
-        coordinateminy = boundingsLeft[0][3]
-
-    coordinatemaxx = min(widthFirstBottomRight,
-                         widthFirstBottomRightVertical)-doorSize
-    coordinatemaxy = heightFirstBottomRight - doorSize
-    coordinates = [{"x": coordinateminx, "y": coordinateminy},
-                   {"x": coordinatemaxx, "y": coordinatemaxy}]
-    fitted_rooms.extend(fitted(coordinates, Inside_rooms, False))
+    #if len(boundingsLeft)*len(boundingsTop) > 0:
+    #    coordinateminx = max(boundingsTop[0][2], boundingsLeft[0][2])
+    #    coordinateminy = boundingsTop[0][3]
+    #elif len(boundingsTop) > 0:
+    #    coordinateminx = boundingsTop[0][2]
+    #    coordinateminy = boundingsTop[0][3]
+    #else:
+    #    coordinateminx = boundingsLeft[0][2]
+    #    coordinateminy = boundingsLeft[0][3]
+    maxX = maxFloorX
+    maxY = maxFloorY
+    minX = 0
+    minY = 0
+    for bound in boundingsRight:
+        if bound[0] < maxX:
+            maxX = bound[0]
+    for bound in boundingsBottom:
+        if bound[1] < maxY:
+            maxY = bound[1]
+    for bound in boundingsLeft:
+        if bound[2] > minX:
+            minX = bound[2]
+    for bound in boundingsTop:
+        if bound[3] > minY:
+            minY = bound[3]
+    
+    #coordinatemaxx = min(widthFirstBottomRight,
+    #                     widthFirstBottomRightVertical)-doorSize
+    #coordinatemaxy = heightFirstBottomRight - doorSize
+    coordinates = [{"x": minX + doorSize, "y": minY + doorSize},
+                   {"x": maxX - doorSize, "y": maxY - doorSize}]
+    rect =  (coordinates[0]["x"],coordinates[0]["y"],coordinates[1]["x"]-coordinates[0]["x"],coordinates[1]["y"]-coordinates[0]["y"])
+    pygame.draw.rect(screen, (255, 255, 0), rect, 2)
+    fitted_rooms.extend(fitted(coordinates, Inside_rooms, False, screen))
     return fitted_rooms
 
 
@@ -305,12 +336,12 @@ def parse_json(filepath):
 def main():
     floor_plan, room_dict = parse_json(
         "main/example.json")
-    parsed = fitted(floor_plan, room_dict, True)
     (width, height) = (max(floor_plan, key=lambda c: c["x"])[
         "x"], max(floor_plan, key=lambda c: c["y"])["y"])
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     screen.fill((0, 0, 0), (0, 0, width, height))
+    parsed = fitted(floor_plan, room_dict, True, screen)
     for element in parsed:
         if element["type"] == "workRoom":
             col = (255, 0, 0)
@@ -320,7 +351,7 @@ def main():
             col = (0, 255, 0)
         #col =(rand.randint(0, 255), rand.randint(0, 255),rand.randint(0, 255))
         pygame.draw.rect(
-            screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 4)
+            screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 1)
     pygame.display.flip()
     pygame.display.update()
     while True:
