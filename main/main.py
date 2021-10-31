@@ -414,7 +414,7 @@ def main():
             parsed = fitted(floor_plan, room_dict, midverdi, screen)
         except:
             #screen.fill((0, 0, 0), (0, 0, width, height))
-            parsed = fitted(floor_plan, room_dict, 0, screen)
+            parsed = fitted(floor_plan, room_dict, minverdi, screen)
         
     for element in parsed:
         if element["type"] == "workRoom":
@@ -423,6 +423,8 @@ def main():
             col = (0, 0, 255)
         if element["type"] == "openWork":
             col = (0, 255, 0)
+        if element["type"] == "Toilet":
+            col = (255, 255, 255)
         #col =(rand.randint(0, 255), rand.randint(0, 255),rand.randint(0, 255))
         pygame.draw.rect(
             screen, col, (element["anchorTopLeftX"], element["anchorTopLeftY"], element["width"], element["height"]), 1)
