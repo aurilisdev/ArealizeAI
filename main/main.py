@@ -373,7 +373,7 @@ def fitted(floor_plan, rooms, windows, screen):
     #coordinatemaxy = heightFirstBottomRight - doorSize
     
     rect =  (coordinates[0]["x"],coordinates[0]["y"],coordinates[1]["x"]-coordinates[0]["x"],coordinates[1]["y"]-coordinates[0]["y"])
-    pygame.draw.rect(screen, (255, 255, 0), rect, 2)
+    #pygame.draw.rect(screen, (255, 255, 0), rect, 2)
     fitted_rooms.extend(fitted(coordinates, Inside_rooms, 0, screen))
     return fitted_rooms
 
@@ -409,11 +409,11 @@ def main():
                 minverdi=midverdi
             except:
                 maxverdi=midverdi
-        screen.fill((0, 0, 0), (0, 0, width, height))
+        #screen.fill((0, 0, 0), (0, 0, width, height))
         try:
             parsed = fitted(floor_plan, room_dict, midverdi, screen)
         except:
-            screen.fill((0, 0, 0), (0, 0, width, height))
+            #screen.fill((0, 0, 0), (0, 0, width, height))
             parsed = fitted(floor_plan, room_dict, 0, screen)
         
     for element in parsed:
