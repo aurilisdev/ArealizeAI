@@ -119,7 +119,7 @@ def fitted(floor_plan, rooms, windows, screen):
     heightFirstBottomRight = 0
     widthFirstBottomRight = 0
     widthFirstBottomRightVertical = 0
-    doorSize = 20
+    doorSize = 40
 
     fitted_units = []
     fitted_rooms = []
@@ -269,7 +269,7 @@ def fitted(floor_plan, rooms, windows, screen):
                     room["anchorTopLeftX"] = maxFloorX-room["width"]
                     room["anchorTopLeftY"] = anchorYCheck-room["height"]
                     fitted_rooms.append(room)
-                    boundingsRight.append([room["anchorTopLeftX"], room["anchorTopLeftY"], room["anchorTopLeftX"] +
+                    boundingsRight.append([room["anchorTopLeftX"]-doorSize, room["anchorTopLeftY"]-doorSize, room["anchorTopLeftX"] +
                                      room["width"], room["anchorTopLeftY"]+room["height"]])
                     anchorYCheck -= room["height"]
 
@@ -312,12 +312,47 @@ def fitted(floor_plan, rooms, windows, screen):
     for bound in boundingsTop:
         if bound[3] > minY:
             minY = bound[3]
+
     
+    romstor = [minX, minY, maxX, maxY]
+    stoppv, stoppo, stopph, stoppn=True, True, True, True
+
+    while stoppo or stoppn:
+        if stoppo:
+            romstor[1]-=1
+            for bound in boundingsLeft+ boundingsRight + boundingsTop:
+                if isRectangleOverlap(romstor, bound):
+                    romstor[1]+=1
+                    stoppo=False
+        if stoppn:
+            romstor[3]+=1
+            for bound in boundingsLeft+ boundingsBottom+ boundingsRight:
+                if isRectangleOverlap(romstor, bound):
+                    romstor[3]-=1
+                    stoppn=False
+    while stopph or stoppv:
+        if stoppv:
+            romstor[0]-=1
+            for bound in boundingsLeft+ boundingsBottom + boundingsTop:
+                if isRectangleOverlap(romstor, bound):
+                    romstor[0]+=1
+                    stoppv=False
+        if stopph:
+            romstor[2]+=1
+            for bound in boundingsRight+ boundingsBottom+ boundingsTop:
+                if isRectangleOverlap(romstor, bound):
+                    romstor[2]-=1
+                    stopph=False
+        
+
+    
+    coordinates = [{"x": romstor[0], "y": romstor[1]},
+                   {"x": romstor[2], "y": romstor[3]}]
+
     #coordinatemaxx = min(widthFirstBottomRight,
     #                     widthFirstBottomRightVertical)-doorSize
     #coordinatemaxy = heightFirstBottomRight - doorSize
-    coordinates = [{"x": minX + doorSize, "y": minY + doorSize},
-                   {"x": maxX - doorSize, "y": maxY - doorSize}]
+    
     rect =  (coordinates[0]["x"],coordinates[0]["y"],coordinates[1]["x"]-coordinates[0]["x"],coordinates[1]["y"]-coordinates[0]["y"])
     pygame.draw.rect(screen, (255, 255, 0), rect, 2)
     fitted_rooms.extend(fitted(coordinates, Inside_rooms, False, screen))
@@ -346,6 +381,7 @@ def main():
     except:
         screen.fill((0, 0, 0), (0, 0, width, height))
         parsed = fitted(floor_plan, room_dict, False, screen)
+        print("ja?")
     for element in parsed:
         if element["type"] == "workRoom":
             col = (255, 0, 0)

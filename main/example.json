@@ -196,7 +196,7 @@
       {
         "id": 13,
         "width": 70,
-        "height": 150,
+        "height": 15,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "openWork"
@@ -235,7 +235,7 @@
       },
       {
         "id": 18,
-        "width": 80,
+        "width": 60,
         "height": 120,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
