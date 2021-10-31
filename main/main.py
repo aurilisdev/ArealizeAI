@@ -401,7 +401,7 @@ def main():
     try: 
         parsed = fitted(floor_plan, room_dict, maxverdi, screen)
     except:
-        for i in range(10):
+        for i in range(52):
             midverdi=(maxverdi+minverdi)/2.0
             print(midverdi)
             try:
