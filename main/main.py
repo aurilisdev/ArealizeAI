@@ -85,13 +85,22 @@ def fitted(floor_plan, rooms, windows, screen):
         units.append(unit)
 
     # Prioriterer workrooms hvis dette er første kall av funksjonen
-    if windows:
-        temp = []
+    antall=0
+    if windows>0:
         i = 0
         while i < len(units):
             if units[i][0]["type"] == "workRoom":
+            #print("Prioritert:", units[i][0]["type"], units[i])
+                antall += 1
+            i+=1
+        temp = []
+        i=0
+        antall*=windows
+        while i < len(units):
+            if units[i][0]["type"] == "workRoom" and antall>0:
                 #print("Prioritert:", units[i][0]["type"], units[i])
                 i += 1
+                antall-=1
             else:
                 #print("Nedprioritert:", units[i][0]["type"], units[i])
                 temp.append(units[i])
@@ -365,7 +374,7 @@ def fitted(floor_plan, rooms, windows, screen):
     
     rect =  (coordinates[0]["x"],coordinates[0]["y"],coordinates[1]["x"]-coordinates[0]["x"],coordinates[1]["y"]-coordinates[0]["y"])
     pygame.draw.rect(screen, (255, 255, 0), rect, 2)
-    fitted_rooms.extend(fitted(coordinates, Inside_rooms, False, screen))
+    fitted_rooms.extend(fitted(coordinates, Inside_rooms, 0, screen))
     return fitted_rooms
 
 
@@ -387,12 +396,25 @@ def main():
     screen = pygame.display.set_mode((width, height))
     screen.fill((0, 0, 0), (0, 0, width, height))
     
-    
+    maxverdi=1.0
+    minverdi=0.0
     try: 
-        parsed = fitted(floor_plan, room_dict, True, screen)
+        parsed = fitted(floor_plan, room_dict, 1, screen)
     except:
+        for i in range(10):
+            midverdi=(maxverdi+minverdi)/2.0
+            try:
+                fitted(floor_plan, room_dict, midverdi, screen)
+                minveri=midverdi
+            except:
+                maxverdi=midverdi
         screen.fill((0, 0, 0), (0, 0, width, height))
-        parsed = fitted(floor_plan, room_dict, False, screen)
+        try:
+            parsed = fitted(floor_plan, room_dict, midverdi, screen)
+        except:
+            screen.fill((0, 0, 0), (0, 0, width, height))
+            parsed = fitted(floor_plan, room_dict, 0, screen)
+        
     for element in parsed:
         if element["type"] == "workRoom":
             col = (255, 0, 0)

@@ -76,8 +76,8 @@
       },
       {
         "id": 1,
-        "width": 40,
-        "height": 40,
+        "width": 90,
+        "height": 50,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "workRoom"
@@ -86,21 +86,6 @@
         "id": 2,
         "width": 40,
         "height": 40,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "workRoom"
-      },
-      {
-        "id": 3,
-        "width": 24,
-        "height": 24,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "meetRoom"
-      },      {
-        "id": 4,
-        "width": 20,
-        "height": 20,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
         "type": "workRoom"
@@ -162,22 +147,6 @@
         "type": "openWork"
       },
       {
-        "id": 12,
-        "width": 80,
-        "height": 90,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "openWork"
-      },
-      {
-        "id": 13,
-        "width": 80,
-        "height": 20,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "openWork"
-      },
-      {
         "id":  14,
         "width": 80,
         "height": 30,
@@ -218,22 +187,6 @@
         "type": "openWork"
       },
       {
-        "id": 16,
-        "width": 80,
-        "height": 110,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "openWork"
-      },
-      {
-        "id": 17,
-        "width": 80,
-        "height": 21,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "meetRoom"
-      },
-      {
         "id": 18,
         "width": 60,
         "height": 120,
@@ -259,39 +212,7 @@
       },
       {
         "id": 19,
-        "width": 80,
-        "height": 120,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "openWork"
-      },
-      {
-        "id": 19,
-        "width": 80,
-        "height": 120,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "openWork"
-      },
-      {
-        "id": 19,
-        "width": 80,
-        "height": 120,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "openWork"
-      },
-      {
-        "id": 19,
-        "width": 80,
-        "height": 120,
-        "anchorTopLeftX": 0,
-        "anchorTopLeftY": 0,
-        "type": "openWork"
-      },
-      {
-        "id": 19,
-        "width": 80,
+        "width": 60,
         "height": 120,
         "anchorTopLeftX": 0,
         "anchorTopLeftY": 0,
