@@ -294,13 +294,7 @@ def main():
 
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if parsed[index]["type"]=="workRoom":
-                    col = (255,0,0)
-                if parsed[index]["type"]=="meetRoom":
-                    col = (0,0,255)
-                if parsed[index]["type"]=="openWork":
-                    col = (0,255,0)
-                #col =(rand.randint(0, 255), rand.randint(0, 255),rand.randint(0, 255))
+                col =(255,255,255)
                 drawn_rooms.append((parsed[index]["anchorTopLeftX"], parsed[index]["anchorTopLeftY"], parsed[index]["width"], parsed[index]["height"]))
                 index += 1
 
