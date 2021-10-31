@@ -196,6 +196,7 @@ def fitted(floor_plan, rooms):
 
 furniDim = 120
 padding=15
+plantScaleFactor = 2
 def furnish(parsed):
     #furniture types: 1=desk, 2=cupboard, 3=plant, 4=table
     #desk width = 70x70, plant width=70x70, cupboard width = 140x70, table width = 70x70
@@ -206,95 +207,86 @@ def furnish(parsed):
     for room in parsed:
         furnNum=0
         roomFurniture = {}
-        if room['width']>100 and room['height']>100:
-            numSpots = (room['width']-(padding))//furniDim
+        if room['width']>(furniDim+padding*2) and room['height']>(furniDim+padding*2):
+
+            numSpots = (room['width']-(2*padding))//furniDim
             print("Numspots: ", numSpots)
-            #if numSpots!=0: #create atleast one desk
-            if room['type']=="workRoom" or room['type']=="openWork":
+            if numSpots!=0: #create atleast one desk. redundant?
                 roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+padding
                 roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']
                 roomFurniture['type']=1
 
-                if len(roomFurniture)!=0: #dict not empty
-                    furniturePos.append(roomFurniture.copy())
-                    roomFurniture.clear()
-                    print("drawing desk")
-                    furnNum+=1
-            for i in range(1, numSpots+1): #adding furniture in the top row, adds one peice of furniture per iteration
-                typeOfFurniture = rand.randint(1,5) #fordi vi vil ha færre planter
-                print(typeOfFurniture)
-                if room['type']=="workRoom" or room['type']=="openWork": #DESK
-                    if typeOfFurniture==5:
-                        roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+(int(furniDim/1.5))*i+padding
-                        roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']
-                        roomFurniture['type']=3
-                        if len(roomFurniture)!=0: #dict not empty
-                            furniturePos.append(roomFurniture.copy())
-                            roomFurniture.clear()
-                        print("drawing plant")
-                        furnNum+=1
-                
-                    if typeOfFurniture==1 or typeOfFurniture==2: #random spacing between desks.
-                        roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+furniDim*i+padding
+            if len(roomFurniture)!=0: #dict not empty
+                furniturePos.append(roomFurniture.copy())
+                roomFurniture.clear()
+                print("drawing desk")
+            furnNum+=1
+            furnWidth=1
+            for i in range(1, numSpots): #adding furniture in the top row, adds one peice of furniture per iteration
+                i+=furnWidth-1
+
+                typeOfFurniture = rand.randint(1,2) #fordi vi vil ha færre planter
+                print("type furn", typeOfFurniture)
+                # if typeOfFurniture==5:
+                #     # roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+(int(furniDim/1.5))*i*furnWidth+padding
+                #     # roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']
+                #     # roomFurniture['type']=3
+                #     # if len(roomFurniture)!=0: #dict not empty
+                #     #     furniturePos.append(roomFurniture.copy())
+                #     #     roomFurniture.clear()
+                #     #     furnWidth=1
+                #     # print("drawing plant")
+                #     # furnNum+=1
+                if room['type']=="workRoom" or room['type']=="openWork":
+                    if typeOfFurniture==1: #random spacing between desks.
+                        roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+furniDim*i*furnWidth+padding
                         roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']
                         roomFurniture['type']=1
+                        print("drawing desk with furnWidth: ", furnWidth)
                         if len(roomFurniture)!=0: #dict not empty
                             furniturePos.append(roomFurniture.copy())
                             roomFurniture.clear()
-                        print("drawing desk")
+                            furnWidth=1
                         furnNum+=1
 
-                if room['type']=="meetRoom":  #TABLE
-
-
-                    roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+3*padding
-                    roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']+(room['height']-min(room['width'], room['height'])*padding*6)*0.5
-                    roomFurniture['type']=4
-                    roomFurniture['roomDim'] = min(room['width'], room['height'])
-                    if len(roomFurniture)!=0: #dict not empty
-                        furniturePos.append(roomFurniture.copy())
-                        roomFurniture.clear()
-
-                    furnNum+=1
-                
-                if room['type']=="workRoom": #CUPBOARD
-                    if typeOfFurniture==3 or typeOfFurniture==4:
+                if room['type']=="workRoom":
+                    if typeOfFurniture==2:
                         if i<=(numSpots-3): #then we can place a cupboard   #maybe something wrong is numSpots correct variable
-                            roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+furniDim*i+padding
+                            roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+furniDim*i*furnWidth+padding
                             roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']
-                            roomFurniture['type']=2
+                            roomFurniture['type'] = 2
+                            furnWidth=2
+                            print("drwing cupboard" )
                             if len(roomFurniture)!=0: #dict not empty
                                 furniturePos.append(roomFurniture.copy())
                                 roomFurniture.clear()
+
                             print("cupboard")
                             furnNum+=1
 
-                if len(roomFurniture)!=0: #dict not empty
-
-                    furniturePos.append(roomFurniture.copy())
-                    roomFurniture.clear()
 
 
-                plantInBottomLeft = rand.randint(0,1)
-                plantInBottomRight = rand.randint(0,1)
 
+            plantInBottomLeft = rand.randint(0,1)
+            plantInBottomRight = rand.randint(0,1)
+
+            roomFurniture.clear()
+            if plantInBottomLeft==1:
+                roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']
+                roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']+room['height']-int(furniDim/plantScaleFactor)
+                roomFurniture['type']=3
+                furnNum+=1
+            if len(roomFurniture)!=0:
+                furniturePos.append(roomFurniture.copy())
                 roomFurniture.clear()
-                if plantInBottomLeft==1:
-                    roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+padding
-                    roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']+room['height']-int(furniDim/1.5)
-                    roomFurniture['type']=3
-                    furnNum+=1
-                if len(roomFurniture)!=0:
-                    furniturePos.append(roomFurniture.copy())
-                    roomFurniture.clear()
-                if plantInBottomRight==1:
-                    roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+room['width']-int(furniDim/1.5)-padding
-                    roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']+room['height']-int(furniDim/1.5)
-                    roomFurniture['type']=3
-                    furnNum+=1
-                if len(roomFurniture)!=0:
-                    furniturePos.append(roomFurniture.copy())
-                    roomFurniture.clear()
+            if plantInBottomRight==1:
+                roomFurniture['anchorTopLeftX']=room['anchorTopLeftX']+room['width']-int(furniDim/plantScaleFactor)
+                roomFurniture['anchorTopLeftY'] = room['anchorTopLeftY']+room['height']-int(furniDim/plantScaleFactor)
+                roomFurniture['type']=3
+                furnNum+=1
+            if len(roomFurniture)!=0:
+                furniturePos.append(roomFurniture.copy())
+                roomFurniture.clear()
         noFurn.append(furnNum)
         furnNum=0
     #print(" furniture pos: ", furniturePos)
@@ -326,15 +318,14 @@ def text_objects(text, font):
     textSurface = font.render(text, True, (0,0,0))
     return textSurface, textSurface.get_rect()
 
-floor_plan, room_dict = parse_json("ArealizeAI/Visuals/example.json")
+floor_plan, room_dict = parse_json("example.json")
 parsed = fitted(floor_plan, room_dict)
 noFurn, furn = furnish(parsed)
 print(noFurn)
 print(furn)
 
-desk = pygame.transform.scale(pygame.image.load("ArealizeAI/Visuals/desk.png"), (furniDim,furniDim))
-plant = pygame.transform.scale(pygame.image.load("ArealizeAI/Visuals/plant.png"), (int(furniDim/1.5),int(furniDim/1.5)))
-table = pygame.transform.scale(pygame.image.load("ArealizeAI/Visuals/table.png"), (furniDim,furniDim))
+desk = pygame.transform.scale(pygame.image.load("desk.png"), (furniDim,furniDim))
+plant = pygame.transform.scale(pygame.image.load("plant.png"), (int(furniDim/plantScaleFactor),int(furniDim/plantScaleFactor)))
 
 
 
@@ -394,22 +385,23 @@ def main():
             if furnType==1:
                 furnW=furniDim
                 furnH=furniDim
-                #pygame.draw.rect(screen, (0,255,255), (xval,yval, furnW,furnH), 4)
+                pygame.draw.rect(screen, (0,255,255), (xval,yval, furnW,furnH), 4)
                 screen.blit(desk, (xval,yval, furnW,furnH))
             if furnType==3:
-                furnW=furniDim
-                furnH=furniDim
-                #pygame.draw.rect(screen, (0,255,0), (xval,yval, furnW,furnH), 4)
+                furnW=int(furniDim/plantScaleFactor)
+                furnH=int(furniDim/plantScaleFactor)
+                pygame.draw.rect(screen, (0,255,0), (xval,yval, furnW,furnH), 4)
                 screen.blit(plant, (xval,yval, furnW,furnH))
             if furnType==4:
                 furnW=furniDim
                 furnH=furniDim
-                print(f['roomDim'])
-                pygame.draw.rect(screen, (0,0,255), (xval,yval, f['roomDim']-padding*6,f['roomDim']-padding*6), 4)
+                pygame.draw.rect(screen, (0,0,255), (xval,yval, furnW,furnH), 4)
             if furnType == 2:
                 furnW=2*furniDim
                 furnH=furniDim
                 pygame.draw.rect(screen, (255,0,0), (xval,yval, furnW,furnH), 4)
+            if furnType==5:
+                pygame.draw.rect(screen, (0,255,0), (xval,yval, furniDim,furniDim), 4)
 
 
     pygame.display.flip()
@@ -418,3 +410,4 @@ def main():
     #     pass
 while True:
     main()
+#
