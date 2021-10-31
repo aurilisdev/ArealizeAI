@@ -208,7 +208,7 @@ def fitted(floor_plan, rooms, windows, screen):
                 for room in unit["rooms"]:
                     forste2 += 1
                     if forste == 1 and forste2 == 1:
-                        anchorXCheck -= doorSize
+                        #anchorXCheck -= doorSize
                         forste = 0
                         heightFirstBottomRight = fitted_rooms[-1]["anchorTopLeftY"]
                         widthFirstBottomRight = fitted_rooms[-1]["anchorTopLeftX"]
@@ -335,13 +335,17 @@ def parse_json(filepath):
 
 def main():
     floor_plan, room_dict = parse_json(
-        "main/example.json")
+        "example.json")
     (width, height) = (max(floor_plan, key=lambda c: c["x"])[
         "x"], max(floor_plan, key=lambda c: c["y"])["y"])
     pygame.init()
     screen = pygame.display.set_mode((width, height))
     screen.fill((0, 0, 0), (0, 0, width, height))
-    parsed = fitted(floor_plan, room_dict, True, screen)
+    try:
+        parsed = fitted(floor_plan, room_dict, True, screen)
+    except:
+        screen.fill((0, 0, 0), (0, 0, width, height))
+        parsed = fitted(floor_plan, room_dict, False, screen)
     for element in parsed:
         if element["type"] == "workRoom":
             col = (255, 0, 0)

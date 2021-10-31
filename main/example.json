@@ -521,6 +521,38 @@
         "type": "workRoom"
       },
       {
+        "id": 0,
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
+        "id": 0,
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
+        "id": 0,
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
+        "id": 0,
+        "width": 40,
+        "height": 40,
+        "anchorTopLeftX": 0,
+        "anchorTopLeftY": 0,
+        "type": "workRoom"
+      },
+      {
         "id": 1,
         "width": 40,
         "height": 40,
